@@ -70,7 +70,7 @@ if (isset($_POST['search'])) {
   <title>Tenancy Managment System</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="./assets/index/styles.css" rel="stylesheet">
+  <link href="assets/index/styles.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
 
   <!-- Font Awesome icons (free version)-->
   <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
