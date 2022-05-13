@@ -128,60 +128,65 @@ try {
           }
           ?>
           <?php
-          foreach ($data as $key => $value) {
-            echo '<div class="card card-inverse mb-3 shadow p-3 mb-5 bg-white rounded" style="padding:1%;">          
-                      <div class="card-block">';
+          echo '<div class="row row-cols-1 row-cols-md-2">';
+            foreach ($data as $key => $value) {
+              echo '<div class="col mb-4">          
+                        <div class="card shadow bg-light">';
             // echo '<a class="btn btn-warning float-right" href="update.php?id='.$value['id'].'&act=';if(isset($value['ap_number_of_plats'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit</a>';
-            echo   '<div class="row">
-                          <div class="col-4">
-                          <h4 class="text-center">Owner Details</h4>';
-            echo '<p><b>Owner Name: </b>' . $value['fullname'] . '</p>';
-            echo '<p><b>Contact Number: </b>' . $value['mobile'] . '</p>';
-            echo '<p><b>Alternate Number: </b>' . $value['alternat_mobile'] . '</p>';
-            echo '<p><b>Email: </b>' . $value['email'] . '</p>';
-            echo '<p><b>Country: </b>' . $value['country'] . '</p><p><b> State: </b>' . $value['state'] . '</p><p><b> City: </b>' . $value['city'] . '</p>';
-            if ($value['image'] !== 'uploads/') {
+              if ($value['image'] !== NULL) {
               # code...
-              echo '<p><b>Image:</b></p> </br> <img src="app/' . $value['image'] . '" width="230" class="img-thumbnail">';
+              echo '<img src="app/' . $value['image'] . '" class="card-img-top" alt="Property Image">';
+              } else {
+                echo '<img src="assets/img/tms.jpg" class="card-img-top" alt="Property Image">';
+              }
+             
+              echo   '<div class="card-body">
+                            <h5 class="card-title">' . $value['state'] . ',' . $value['country'] . '</h5>
+                            <h4 class="text-center">Owner Details</h4>';
+              echo '<p><b>Owner Name: </b>' . $value['fullname'] . '</p>';
+              echo '<p><b>Contact Number: </b>' . $value['mobile'] . '</p>';
+              echo '<p><b>Alternate Number: </b>' . $value['alternat_mobile'] . '</p>';
+              echo '<p><b>Email: </b>' . $value['email'] . '</p>';
+              echo '<p><b>Country: </b>' . $value['country'] . '</p><p><b> State: </b>' . $value['state'] . '</p><p><b> City: </b>' . $value['city'] . '</p>';
+
+              echo '</div>
+                            <div class="col-5">
+                            <h4 class="text-center">Property Details</h4>';
+              // echo '<p><b>Country: </b>'.$value['country'].'<b> State: </b>'.$value['state'].'<b> City: </b>'.$value['city'].'</p>';
+              echo '<p><b>Plot Number: </b>' . $value['plot_number'] . '</p>';
+
+              if (isset($value['rent'])) {
+                echo '<p><b>Rent: </b>$' . $value['rent'] . ' <small><i>per month</i></small></p> ';
+              }
+
+              if (isset($value['sale'])) {
+                echo '<p><b>Sale: </b>$' . $value['sale'] . '</p>';
+              }
+
+              if (isset($value['apartment_name']))
+                echo '<div class="alert alert-success" role="alert"><p><b>Apartment Name: </b>' . $value['apartment_name'] . '</p></div>';
+
+              if (isset($value['ap_number_of_plats']))
+                echo '<div class="alert alert-success" role="alert"><p><b>Plat Number: </b>' . $value['ap_number_of_plats'] . '</p></div>';
+
+              echo '<p><b>Available Rooms: </b>' . $value['rooms'] . '</p>';
+              echo '<p><b>Address: </b>' . $value['address'] . '</p><p><b> Landmark: </b>' . $value['landmark'] . '</p>';
+              echo '</div>
+                            <div class="col-3">
+                            <h4>Other Details</h4>';
+              echo '<p><b>Accommodation: </b>' . $value['accommodation'] . '</p>';
+              echo '<p><b>Description: </b>' . $value['description'] . '</p>';
+              if ($value['vacant'] == 0) {
+                echo '<div class="alert alert-danger" role="alert"><h3><b>Occupied</b></h3></div>';
+              } else {
+                echo '<div class="alert alert-success" role="alert"><h3><b>Vacant!</b></h3></div>';
+              }
+              echo '</div>
+                          </div>              
+                          </div>
+                      </div>';
             }
-
-            echo '</div>
-                          <div class="col-5">
-                          <h4 class="text-center">Property Details</h4>';
-            // echo '<p><b>Country: </b>'.$value['country'].'<b> State: </b>'.$value['state'].'<b> City: </b>'.$value['city'].'</p>';
-            echo '<p><b>Plot Number: </b>' . $value['plot_number'] . '</p>';
-
-            if (isset($value['rent'])) {
-              echo '<p><b>Rent: </b>$' . $value['rent'] . ' <small><i>per month</i></small></p> ';
-            }
-
-            if (isset($value['sale'])) {
-              echo '<p><b>Sale: </b>$' . $value['sale'] . '</p>';
-            }
-
-            if (isset($value['apartment_name']))
-              echo '<div class="alert alert-success" role="alert"><p><b>Apartment Name: </b>' . $value['apartment_name'] . '</p></div>';
-
-            if (isset($value['ap_number_of_plats']))
-              echo '<div class="alert alert-success" role="alert"><p><b>Plat Number: </b>' . $value['ap_number_of_plats'] . '</p></div>';
-
-            echo '<p><b>Available Rooms: </b>' . $value['rooms'] . '</p>';
-            echo '<p><b>Address: </b>' . $value['address'] . '</p><p><b> Landmark: </b>' . $value['landmark'] . '</p>';
-            echo '</div>
-                          <div class="col-3">
-                          <h4>Other Details</h4>';
-            echo '<p><b>Accommodation: </b>' . $value['accommodation'] . '</p>';
-            echo '<p><b>Description: </b>' . $value['description'] . '</p>';
-            if ($value['vacant'] == 0) {
-              echo '<div class="alert alert-danger" role="alert"><h3><b>Occupied</b></h3></div>';
-            } else {
-              echo '<div class="alert alert-success" role="alert"><h3><b>Vacant!</b></h3></div>';
-            }
-            echo '</div>
-                        </div>              
-                        </div>
-                    </div>';
-          }
+          echo '</div>'
           ?>
         </div>
       </div>
