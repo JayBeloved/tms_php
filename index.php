@@ -90,7 +90,7 @@ if (isset($_POST['search'])) {
 
 <body id="page-top">
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">TMS</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,11 +101,11 @@ if (isset($_POST['search'])) {
         <ul class="navbar-nav text-uppercase ml-auto my-2 my-lg-0">
 
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">How It Works</a>
+            <a class="nav-link js-scroll-trigger" href="#search">Search</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#search">Search</a>
+            <a class="nav-link js-scroll-trigger" href="#about">How It Works</a>
           </li>
 
           <?php
@@ -147,12 +147,13 @@ if (isset($_POST['search'])) {
   </header>
 
   <!-- Search -->
-  <section id="search">
+  <section class="page-section bg-primary" id="search">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <h2 class="section-heading text-uppercase">Search</h2>
-          <h3 class="section-subheading text-muted">Make a quick search at our number of services!</h3>
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h2 class="section-heading text-uppercase text-white mt-0">Search</h2>
+          <hr class="divider light my-4" />
+          <h3 class="text-white-50 mb-4">Make a quick search at our number of services!</h3>
         </div>
       </div>
       <div class="row">
@@ -175,7 +176,7 @@ if (isset($_POST['search'])) {
 
               <div class="col-md-2">
                 <div class="form-group">
-                  <button id="" class="btn btn-success btn-md text-uppercase" name="search" value="search" type="submit">Search</button>
+                  <button id="" class="btn btn-light btn-x js-scroll-trigger" name="search" value="search" type="submit">Search</button>
                 </div>
               </div>
             </div>
@@ -186,19 +187,19 @@ if (isset($_POST['search'])) {
             echo '<div style="color:#FF0000;text-align:center;font-size:17px;">' . $errMsg . '</div>';
           }
           if (count($data) !== 0) {
-            echo "<h2 class='text-center'>Available Results:</h2>";
+            echo "<h2 class='text-center text-white'>Available Results:</h2>";
           } else {
             //echo "<h2 class='text-center' style='color:red;'>Try Some other keywords</h2>";
           }
           ?>
           <?php
           foreach ($data as $key => $value) {
-            echo '<div class="card card-inverse card-info mb-3" style="padding:1%;">          
-                        <div class="card-block">';
+            echo '<div class="card card-inverse card-product mb-3" style="padding:1%;">          
+                      <div class="card-block">';
             // echo '<a class="btn btn-warning float-right" href="update.php?id='.$value['id'].'&act=';if(isset($value['ap_number_of_plats'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit</a>';
             echo   '<div class="row">
-                            <div class="col-4">
-                            <h4 class="text-center">Owner Details</h4>';
+                          <div class="col-4">
+                          <h4 class="text-center">Owner Details</h4>';
             echo '<p><b>Owner Name: </b>' . $value['fullname'] . '</p>';
             echo '<p><b>Contact Number: </b>' . $value['mobile'] . '</p>';
             echo '<p><b>Alternate Number: </b>' . $value['alternat_mobile'] . '</p>';
@@ -210,8 +211,8 @@ if (isset($_POST['search'])) {
             }
 
             echo '</div>
-                            <div class="col-5">
-                            <h4 class="text-center">Property Details</h4>';
+                          <div class="col-5">
+                          <h4 class="text-center">Property Details</h4>';
             // echo '<p><b>Country: </b>'.$value['country'].'<b> State: </b>'.$value['state'].'<b> City: </b>'.$value['city'].'</p>';
             echo '<p><b>Plot Number: </b>' . $value['plot_number'] . '</p>';
 
@@ -232,8 +233,8 @@ if (isset($_POST['search'])) {
             echo '<p><b>Available Rooms: </b>' . $value['rooms'] . '</p>';
             echo '<p><b>Address: </b>' . $value['address'] . '</p><p><b> Landmark: </b>' . $value['landmark'] . '</p>';
             echo '</div>
-                            <div class="col-3">
-                            <h4>Other Details</h4>';
+                          <div class="col-3">
+                          <h4>Other Details</h4>';
             echo '<p><b>Accommodation: </b>' . $value['accommodation'] . '</p>';
             echo '<p><b>Description: </b>' . $value['description'] . '</p>';
             if ($value['vacant'] == 0) {
@@ -242,9 +243,9 @@ if (isset($_POST['search'])) {
               echo '<div class="alert alert-success" role="alert"><h3><b>Vacant!</b></h3></div>';
             }
             echo '</div>
-                          </div>              
-                         </div>
-                      </div>';
+                        </div>              
+                        </div>
+                    </div>';
           }
           ?>
         </div>
@@ -258,7 +259,7 @@ if (isset($_POST['search'])) {
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <span class="copyright">&copy; Simple House Rental System - <?php echo date("Y"); ?></span>
+          <span class="copyright">&copy; Tenancy Management System - <?php echo date("Y"); ?></span>
         </div>
         <div class="col-md-4">
           <ul class="list-inline social-buttons">
@@ -288,19 +289,14 @@ if (isset($_POST['search'])) {
     </div>
   </footer>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="assets/plugins/jquery/jquery.min.js"></script>
-  <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-
-  <!-- Plugin JavaScript -->
-  <script src="assets/plugins/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Contact form JavaScript -->
-  <script src="assets/js/jqBootstrapValidation.js"></script>
-  <script src="assets/js/contact_me.js"></script>
-
-  <!-- Custom scripts for this template -->
-  <script src="assets/js/rent.js"></script>
+  <!-- Bootstrap core JS-->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Third party plugin JS-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+  <!-- Core theme JS-->
+  <script src="assets/index/scripts.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>
