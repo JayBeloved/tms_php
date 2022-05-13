@@ -1,21 +1,64 @@
 <?php
-require 'config/config.php';
+require '../config/config.php';
 $data = [];
 
-try {
-  //foreach ($keyword as $key => $value) {
-  # code...
+if (isset($_POST['search'])) {
+  // Get data from FORM
+  $keywords = $_POST['keywords'];
+  $location = $_POST['location'];
 
-  $stmt = $connect->prepare("SELECT * FROM room_rental_registrations_apartment WHERE 1");
-  $stmt->execute();
-  $data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  //keywords based search
+  $keyword = explode(',', $keywords);
+  $concats = "(";
+  $numItems = count($keyword);
+  $i = 0;
+  foreach ($keyword as $key => $value) {
+    # code...
+    if (++$i === $numItems) {
+      $concats .= "'" . $value . "'";
+    } else {
+      $concats .= "'" . $value . "',";
+    }
+  }
+  $concats .= ")";
+  //end of keywords based search
 
-  $data = $data2;
-} catch (PDOException $e) {
-  $errMsg = $e->getMessage();
+  //location based search
+  $locations = explode(',', $location);
+  $loc = "(";
+  $numItems = count($locations);
+  $i = 0;
+  foreach ($locations as $key => $value) {
+    # code...
+    if (++$i === $numItems) {
+      $loc .= "'" . $value . "'";
+    } else {
+      $loc .= "'" . $value . "',";
+    }
+  }
+  $loc .= ")";
+
+  //end of location based search
+
+  try {
+    //foreach ($keyword as $key => $value) {
+    # code...
+
+    $stmt = $connect->prepare("SELECT * FROM room_rental_registrations_apartment WHERE country IN $concats OR country IN $loc OR state IN $concats OR state IN $loc OR city IN $concats OR city IN $loc OR address IN $concats OR address IN $loc OR rooms IN $concats OR landmark IN $concats OR landmark IN $loc OR rent IN $concats OR deposit IN $concats");
+    $stmt->execute();
+    $data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $connect->prepare("SELECT * FROM room_rental_registrations WHERE country IN $concats OR country IN $loc OR state IN $concats OR state IN $loc OR city IN $concats OR city IN $loc OR rooms IN $concats OR address IN $concats OR address IN $loc OR landmark IN $concats OR rent IN $concats OR deposit IN $concats");
+    $stmt->execute();
+    $data8 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $data = array_merge($data2, $data8);
+  } catch (PDOException $e) {
+    $errMsg = $e->getMessage();
+  }
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +71,7 @@ try {
   <title>Tenancy Managment System</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="assets/index/styles.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
+  <link href="../assets/index/styles.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
 
   <!-- Font Awesome icons (free version)-->
   <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
@@ -37,20 +80,13 @@ try {
   <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
   <!-- Third party plugin CSS-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
-
-  <!-- Custom fonts for this template -->
-  <!-- <link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
--->
-  <!-- Custom styles for this template -->
-  <!--<link href="assets/css/rent.css" rel="stylesheet">
-  <link href="assets/css/style.css" rel="stylesheet">-->
 </head>
 
 <body id="page-top">
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">TMS</a>
+      <a class="navbar-brand js-scroll-trigger" href="../index.php">TMS</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fa fa-bars"></i>
@@ -59,7 +95,7 @@ try {
         <ul class="navbar-nav text-uppercase ml-auto my-2 my-lg-0">
 
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="./app/search.php">Search</a>
+            <a class="nav-link js-scroll-trigger" href="../app/search.php">Search</a>
           </li>
 
           <li class="nav-item">
@@ -88,35 +124,42 @@ try {
     </div>
   </nav>
 
-  <!-- Header -->
-  <header class="masthead">
-    <div class="container h-100">
-      <div class="row h-100 align-items-center justify-content-center text-center">
-        <div class="col-lg-10 align-self-end">
-          <h1 class="text-uppercase text-white font-weight-bold">Simple Tenancy Managment System</h1>
-          <hr class="divider my-4" />
-        </div>
-        <div class="col-lg-8 align-self-baseline">
-          <p class="text-white-75 font-weight-light mb-5">TMS has something to offer you Landlords, Agents and Tenants!</p>
-          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
   <!-- Search -->
-  <section class="page-section bg-primary" id="featured">
+  <section class="page-section bg-primary" id="search">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8 text-center">
-          <h2 class="section-heading text-uppercase text-white mt-0">FEATURED</h2>
+          <h2 class="section-heading text-uppercase text-white mt-0">Search</h2>
           <hr class="divider light my-4" />
-          <h3 class="text-white-50 mb-4">Featured Rental Listings!</h3>
+          <h3 class="text-white-50 mb-4">Make a quick search at our number of services!</h3>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-        
+          <form action="" method="POST" class="center" novalidate>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input class="form-control" id="keywords" name="keywords" type="text" placeholder="Keywords (Ex: 1 BHK, Rent Amount, Landmark)" required data-validation-required-message="Please enter keywords">
+                  <p class="help-block text-danger"></p>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <input class="form-control" id="location" type="text" name="location" placeholder="Location" required data-validation-required-message="Please enter location.">
+                  <p class="help-block text-danger"></p>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <button id="" class="btn btn-light btn-x js-scroll-trigger" name="search" value="search" type="submit">Search</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
           <?php
           if (isset($errMsg)) {
             echo '<div style="color:#FF0000;text-align:center;font-size:17px;">' . $errMsg . '</div>';
@@ -189,49 +232,4 @@ try {
     <br><br><br><br><br><br>
   </section>
 
-  <!-- Footer -->
-  <footer style="background-color: #ccc;">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <span class="copyright">&copy; Tenancy Management System - <?php echo date("Y"); ?></span>
-        </div>
-        <div class="col-md-4">
-          <ul class="list-inline social-buttons">
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fa fa-whatsapp"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fa fa-twitter"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fa fa-facebook"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fa fa-instagram"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Bootstrap core JS-->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Third party plugin JS-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-  <!-- Core theme JS-->
-  <script src="assets/index/scripts.js?v=<?php echo time(); ?>"></script>
 </body>
-
-</html>
